@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\app\Main.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\app\Main.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\app\grid\Grid.js" />
+    <None Include="wwwroot\app\interface\Bottom.js" />
+    <None Include="wwwroot\app\sound\Player.js" />
+    <None Include="wwwroot\app\sound\Sequencer.js" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\app\style\main.scss" />
+    <None Include="wwwroot\app\Tone\core\Transport.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Melody</title>
+    <script type="text/javascript" data-main="app/Main" src="app/require.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="app/style/main.css" />
+    <link type="text/css" rel="stylesheet" href="app/style/grid.css" />
+    <link type="text/css" rel="stylesheet" href="app/style/icons.css" />
+    <link type="text/css" rel="stylesheet" href="app/style/melody.css" />
+    <link type="text/css" rel="stylesheet" href="app/style/common.css" />
+    <link type="text/css" rel="stylesheet" href="app/style/bottom.css" />
+    <!--<script type="text/javascript" src="app/grid/Grid.js"></script>
+    <!--<script type="text/javascript" src="app/interface/Bottom.js"></script>
+    <script type="text/javascript" src="app/sound/Player.js"></script>
+    <script type="text/javascript" src="app/sound/Sequencer.js"></script>
+    <script type="text/javascript" src="Tone/core/Transport.js"></script>-->
+    <!--<script type="text/javascript" src="Tween.js"></script>-->
+    <!--<script type="text/javascript" src="app/grid/AI.js"></script>
+    <script type="text/javascript" src="app/grid/Tile.js"></script>-->
+    <!--<script type="text/javascript">
+
+        (function () {
+            document.addEventListener('DOMContentLoaded', function (event) {
+                debugger;
+
+                var Config = {
+                    'gridHeight': 14,
+                    'gridWidth': 8,
+                    'tileMargin': 2,
+                    'notes': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'A', 'B'],
+                    'pitches': ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+                    'activeTime': 200
+                }
+                var Colors = {
+                    'charcoal': 'rgb(50,51,52)',
+                    'lightGrey': 'rgb(223,224,225)',
+                    'lighterGrey': 'rgb(244,244,244)',
+                    'grey': 'rgb(204, 204, 204)',
+                    'darkGrey': 'rgb(104, 104, 104)',
+                    //colors
+                    'orange': '#FFC234',
+                    'lightOrange': '#996e19',
+                    'blue': 'rgb(22, 168, 240)',
+                    'lightBlue': 'rgb(131, 211, 248)',
+                    //keys
+                    'C': '#BF4FA8',
+                    'C#': '#8064c6',
+                    'Db': '#8064c6',
+                    'D': '#4D61D8',
+                    'D#': '#ed3883',
+                    'Eb': '#ed3883',
+                    'E': '#45B5A1',
+                    'F': '#95C631',
+                    'F#': '#f6be37',
+                    'Gb': '#f6be37',
+                    'G': '#EDD929',
+                    'G#': '#95c631',
+                    'Ab': '#95c631',
+                    'A': '#F7943D',
+                    'A#': '#45b5a1',
+                    'Bb': '#45b5a1',
+                    'B': '#E33159'
+                }
+                var Grid = function (container) {
+
+                    this.element = document.createElement('DIV');
+                    this.element.id = 'Grid';
+                    container.appendChild(this.element);
+
+                    this.bgCanvas = document.createElement('CANVAS');
+                    this.element.appendChild(this.bgCanvas);
+
+                    /**
+                     * the background context
+                     */
+                    this.bgContext = this.bgCanvas.getContext('2d');
+
+
+                    this.canvas = document.createElement('CANVAS');
+                    this.element.appendChild(this.canvas);
+
+                    /**
+                     * the drawing context
+                     */
+                    this.context = this.canvas.getContext('2d');
+
+                    /**
+                     * the canvas size
+                     */
+                    this.width = 0;
+                    this.height = 0;
+
+                    this.tileWidth = 0;
+                    this.tileHeight = 0;
+
+                    /**
+                     * the currently active column. -1 for nothing
+                     */
+                    this._activeColumn = -1;
+
+                    /**
+                     * Track mouse drag events
+                     */
+                    this.mouseDrag = false;
+                    this.lastDragTile = { x: null, y: null };
+
+                    this._resize();
+                    window.addEventListener('resize', this._resize.bind(this));
+
+                    //do the drawing
+                    this.canvas.addEventListener('mousemove', this._hover.bind(this));
+                    this.canvas.addEventListener('mousedown', this._clicked.bind(this));
+                    this.canvas.addEventListener('mouseup', this._mouseUp.bind(this));
+
+                    this.canvas.addEventListener('touchmove', this._hover.bind(this));
+                    this.canvas.addEventListener('touchend', this._mouseUp.bind(this));
+                    this.canvas.addEventListener('touchstart', this._clicked.bind(this));
+
+                    /**
+                     * all the tiles on the screen
+                     */
+                    this._tiles = new Array(10); //Config.gridWidth
+
+                    //all of the AI on the screen
+                    this._ai = [];
+
+                    /**
+                     * the x/y offset of the AI
+                     */
+                    this._aiOffset = {
+                        x: 0,
+                        y: 0
+                    };
+
+                    /**
+                     * flag if the drawing needs updating
+                     */
+                    this._needsUpdate = false;
+
+                    /**
+                     * the direction of the AI phasing
+                     * "up"/"down"/"left"/"right"/"none"
+                     */
+                    this._direction = 'none';
+
+                    /**
+                     * counts the number of times
+                     * that the loop has rotated
+                     */
+                    this._iterationCounter = 0;
+
+                    this._boundDraw = this.draw.bind(this);
+                    this.draw();
+
+                    this.onNote = function () { };
+                };
+
+                Grid.prototype._resize = function () {
+                    this._needsUpdate = true;
+                    this.width = this.canvas.offsetWidth * 2;
+                    this.height = this.canvas.offsetHeight * 2;
+                    this.context.canvas.width = this.width;
+                    this.context.canvas.height = this.height;
+                    this.bgContext.canvas.width = this.width;
+                    this.bgContext.canvas.height = this.height;
+                    this.tileWidth = this.width / 10;// Config.gridWidth;
+                    this.tileHeight = this.height / 10;//Config.gridHeight;
+                    this._drawLines();
+                };
+
+                Grid.prototype._tileAtPosition = function (x, y) {
+                    return {
+                        x: Math.floor(x / (this.tileWidth / 2)),
+                        y: Math.floor(y / (this.tileHeight / 2))
+                    };
+                };
+
+                Grid.prototype._clicked = function (e) {
+                    debugger;
+                    this.mouseDrag = true;
+
+                    e.preventDefault();
+                    //get the touch coord
+                    if (e.type === 'touchstart' || e.type === 'touchmove') {
+                        for (var i = 0; i < e.changedTouches.length; i++) {
+                            var touch = e.changedTouches[i];
+                            var touchTilePos = this._tileAtPosition(touch.clientX, touch.clientY);
+                            this._addTile(touchTilePos.x, touchTilePos.y);
+
+                            this.lastDragTile = touchTilePos;
+                        }
+                    } else {
+                        var tilePos = this._tileAtPosition(e.clientX, e.clientY);
+                        this._addTile(tilePos.x, tilePos.y, true);
+
+                        this.lastDragTile = tilePos;
+                    }
+                };
+
+                Grid.prototype._mouseUp = function (e) {
+                    e.preventDefault();
+
+                    // Reset drag variables
+                    this.mouseDrag = false;
+                    this.lastDragTile = { x: null, y: null };
+                };
+
+                Grid.prototype._hover = function (e) {
+                    const x = e.clientX || e.touches[0].clientX;
+                    const y = e.clientY || e.touches[0].clientY;
+
+                    var tilePos = this._tileAtPosition(x, y);
+
+                    //get the tile at the pos
+                    var tile = this._tiles[tilePos.x];
+
+                    // Call click event on mousedrag
+                    if (this.mouseDrag && (tilePos.x !== this.lastDragTile.x || tilePos.y !== this.lastDragTile.y)) {
+                        this.lastDragTile = tilePos;
+                        this._clicked(e);
+                    }
+
+                    if (tile && !tile.isHovered()) {
+                        if (tilePos.y === tile.y) {
+                            this._needsUpdate = true;
+                            tile.hover();
+                        }
+                    }
+                    //go through the tiles, and unhover them
+                    for (var i = 0; i < this._tiles.length; i++) {
+                        var t = this._tiles[i];
+                        if (t && t.isHovered() && (t.x !== tilePos.x || t.y !== tilePos.y)) {
+                            this._needsUpdate = true;
+                            t.unhover();
+                        }
+                    }
+                };
+
+                Grid.prototype._addTile = function (x, y, hover) {
+                    this._needsUpdate = true;
+                    //if there's a tile already in that column
+                    if (this._tiles[x]) {
+                        var tile = this._tiles[x];
+                        //and row, remove it
+                        if (tile.y == y) {
+                            this._removeTile(x, y, tile);
+                        } else {
+                            //otherwise remove it
+                            this._removeTile(x, y, tile);
+                            this._addTile(x, y, hover);
+                        }
+                    } else {
+                        var t = new Tile(x, y, hover);
+                        this.onNote(y);
+                        var ai = new AI(t, this);
+                        this._tiles[x] = t;
+                        this._ai.push(ai);
+                    }
+                };
+
+                Grid.prototype._removeTile = function (x, y, tile) {
+                    //remove the AI associated with that tile
+                    for (var i = 0; i < this._ai.length; i++) {
+                        var ai = this._ai[i];
+                        if (ai.tile === tile) {
+                            ai.dispose();
+                            this._ai.splice(i, 1);
+                            break;
+                        }
+                    }
+                    this._tiles[x] = null;
+                    this._needsUpdate = true;
+                };
+
+                /**
+                 * Drawing
+                 */
+                Grid.prototype.draw = function () {
+                    requestAnimationFrame(this._boundDraw);
+                    debugger;
+                    if (this._needsUpdate) {
+                        this._needsUpdate = false;
+                        this.context.clearRect(0, 0, this.width, this.height);
+                        //draw the active column
+                        if (this._activeColumn !== -1) {
+                            this.context.fillStyle = 'rgba(22, 168, 240, .08)';
+                            this.context.fillRect(this._activeColumn * this.tileWidth, 0, this.tileWidth, this.height);
+                        }
+                        this._drawAI();
+                        this._drawTiles();
+                        TWEEN.update();
+                    }
+                };
+
+                Grid.prototype._drawLines = function () {
+                    var gridWidth = 10;//Config.gridWidth;
+                    var gridHeight = 10;//Config.gridHeight;
+                    this.bgContext.strokeStyle = 'rgba(22, 168, 240, 0.4)';
+                    this.bgContext.lineWidth = 1;
+                    for (var x = 0; x < gridWidth; x++) {
+                        for (var y = 0; y < gridHeight; y++) {
+                            //draw tile with border
+                            this.bgContext.beginPath();
+                            this.bgContext.strokeRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
+                        }
+                    }
+                };
+
+                Grid.prototype._drawTiles = function () {
+                    for (var i = 0; i < this._tiles.length; i++) {
+                        var tile = this._tiles[i];
+                        if (tile) {
+                            tile.draw(this.context, this.tileWidth, this.tileHeight, this._activeColumn);
+                        }
+                    }
+                };
+
+                Grid.prototype._drawAI = function () {
+                    for (var i = 0; i < this._ai.length; i++) {
+                        this._ai[i].draw(this.context, this.tileWidth, this.tileHeight, this._activeColumn, this._aiOffset, this._direction);
+                    }
+                };
+
+                /**
+                 * select a column
+                 */
+                Grid.prototype.select = function (column) {
+                    debugger;
+                    this._needsUpdate = true;
+                    //get all of the tiles in that column
+                    this._activeColumn = column;
+                    //returns all the active notes in that column
+                    var ret = {
+                        melody: -1,
+                        harmony: -1,
+                    };
+                    if (this._tiles[column]) {
+                        ret.melody = (this._tiles[column].y);
+                    }
+                    for (var i = 0; i < this._ai.length; i++) {
+                        var ai = this._ai[i];
+                        if (ai.isInColumn(column)) {
+                            //if it's not already in there
+                            var row = ai.getRow();
+                            if (ret.melody !== row) {
+                                ret.harmony = row;
+                            }
+                        }
+                    }
+                    /*if (column === Config.gridWidth - 1){
+                        if (this._iterationCounter > 0 && this._iterationCounter % 2 === 0){
+                            //increment all the ghosts
+                            this._moveAI();
+                        }
+                        this._iterationCounter++;
+                    }*/
+                    return ret;
+                };
+
+                Grid.prototype._moveAI = function () {
+                    this._needsUpdate = true;
+                    //if it's a new direciton, do it twice
+                    switch (this._direction) {
+                        case 'down':
+                            this._aiOffset.y = (this._aiOffset.y + 2) % Config.gridHeight;
+                            break;
+                        case 'up':
+                            this._aiOffset.y -= 2;
+                            if (this._aiOffset.y < 0) {
+                                this._aiOffset.y = Config.gridHeight - 2;
+                            }
+                            break;
+                        case 'left':
+                            this._aiOffset.x -= 2;
+                            if (this._aiOffset.x < 0) {
+                                this._aiOffset.x = Config.gridWidth - 2;
+                            }
+                            break;
+                        case 'right':
+                            this._aiOffset.x = (this._aiOffset.x + 2) % Config.gridWidth;
+                            break;
+                        case 'none':
+                            this._aiOffset.x = 0;
+                            this._aiOffset.y = 0;
+                            break;
+                    }
+                    for (var i = 0; i < this._ai.length; i++) {
+                        this._ai[i].move(this._aiOffset.x, this._aiOffset.y, this._direction);
+                    }
+                };
+
+                /**
+                 * select a column
+                 */
+                Grid.prototype.setDirection = function (direction) {
+                    this._needsUpdate = true;
+                    //if it's early in the loop
+                    if (this._activeColumn < 2) {
+                        this._iterationCounter = 1;
+                    } else {
+                        this._iterationCounter = 0;
+                    }
+
+                    this._direction = direction;
+
+                    //remove all the ai's
+                    for (var i = 0; i < this._ai.length; i++) {
+                        this._ai[i].dispose();
+                    }
+                    this._ai = [];
+                    //add them back
+                    for (var j = 0; j < this._tiles.length; j++) {
+                        var tile = this._tiles[j];
+                        if (tile) {
+                            var ai = new AI(tile, this);
+                            this._ai.push(ai);
+                        }
+                    }
+
+                    //reset the offset
+                    this._aiOffset = {
+                        x: 0,
+                        y: 0
+                    };
+
+                    //move the AI initially
+                    //if it's a new direction, do it twice
+                    this._moveAI();
+                };
+
+
+                var tileMargin = Config.tileMargin;
+
+                var AI = function (tile, GRID) {
+                    //a refernce to the tile
+                    this.tile = tile;
+
+                    this._offsetX = 0;
+                    this._offsetY = 0;
+
+                    this._currentX = 0;
+                    this._currentY = 0;
+
+                    this._tween = null;
+
+                    this.GRID = GRID;
+
+                };
+
+                AI.prototype.draw = function (context, width, height, activeColumn, offset, direction) {
+
+                    if (this._offsetX !== offset.x || this._offsetY !== offset.y) {
+                        this.move(offset.x, offset.y, direction);
+                    }
+
+
+                    var x = (this.tile.x + this._currentX) % Config.gridWidth;
+                    var y = (this.tile.y + this._currentY) % Config.gridHeight;
+
+                    this._drawRect(context, x, y, width, height, activeColumn);
+
+                    if ((this.tile.y + this._currentY) > Config.gridHeight - 1 && (this.tile.y + this._currentY) < Config.gridHeight) {
+                        //draw another copy
+                        var remainerY = this._currentY % 1;
+                        remainerY -= 1;
+                        this._drawRect(context, x, remainerY, width, height, activeColumn);
+                    } else if ((this.tile.x + this._currentX) > Config.gridWidth - 1 && (this.tile.x + this._currentX) < Config.gridWidth) {
+                        var remainerX = this._currentX % 1;
+                        remainerX -= 1;
+                        this._drawRect(context, remainerX, y, width, height, activeColumn);
+                    }
+                };
+
+                AI.prototype._drawRect = function (context, x, y, width, height, activeColumn) {
+                    context.globalAlpha = 0.5;
+                    if ((this.tile.x + this._offsetX) % Config.gridWidth === activeColumn) {
+                        context.fillStyle = Colors.darkGrey;
+                    } else {
+                        context.fillStyle = Colors.grey;
+                    }
+                    context.beginPath();
+                    context.fillRect(x * width + tileMargin, y * height + tileMargin, width - tileMargin * 2, height - tileMargin * 2);
+                    context.globalAlpha = 1;
+                };
+
+                AI.prototype.move = function (toX, toY, direction) {
+
+                    var xAdder = 0;
+                    var yAdder = 0;
+
+                    var yRemainder = (this._currentY % 1);
+                    var xRemainder = (this._currentX % 1);
+
+                    if (direction === 'down' && this._offsetY === Config.gridHeight - 1 && toY === 0) {
+                        this._currentY = -1 - yRemainder;
+                    } else if (direction === 'up' && this._offsetY === 0 && toY === Config.gridHeight - 1) {
+                        this._currentY = Config.gridHeight + yRemainder;
+                    } else if (direction === 'up' && this._offsetY === 0) {
+                        this._currentY = Config.gridHeight + yRemainder;
+                    } else if (direction === 'left' && this._offsetX === 0) {
+                        this._currentX = Config.gridWidth + xRemainder;
+                    } else if (direction === 'right' && this._offsetX === Config.gridWidth - 1 && toX === 0) {
+                        this._currentX = -1 - xRemainder;
+                    }
+
+                    if (this._tween) {
+                        this._tween.stop();
+                    }
+
+                    var self = this;
+
+                    this._tween = new TWEEN.Tween({
+                        x: this._currentX,
+                        y: this._currentY,
+                    })
+                        .to({
+                            x: toX,
+                            y: toY,
+                        }, 200)
+                        .onUpdate(function () {
+                            self._currentX = this.x;
+                            self._currentY = this.y;
+                            self.GRID._needsUpdate = true;
+                        })
+                        .start()
+                        .easing(TWEEN.Easing.Quintic.InOut);
+
+                    this._offsetX = toX;
+                    this._offsetY = toY;
+
+                };
+
+                AI.prototype.isInColumn = function (column) {
+                    return ((this.tile.x + this._offsetX) % Config.gridWidth) === column;
+                };
+
+                AI.prototype.getRow = function () {
+                    return (this.tile.y + this._offsetY) % Config.gridHeight;
+                };
+
+                AI.prototype.dispose = function () {
+                    if (this._tween) {
+                        this._tween.stop();
+                    }
+                    this._tween = null;
+                    this.tile = null;
+                    this.GRID = null;
+                };
+
+                var tileMargin = Config.tileMargin;
+
+                var Tile = function (x, y, hover) {
+
+                    this.x = x;
+                    this.y = y;
+
+                    this._hovered = hover || false;
+                };
+
+                Tile.prototype.draw = function (context, width, height, activeColumn) {
+
+                    //get the note and color
+                    var margin = tileMargin;
+                    var note = Config.notes[this.y];
+                    context.fillStyle = Colors[note];
+                    context.beginPath();
+                    context.fillRect(this.x * width + tileMargin, this.y * height + tileMargin, width - tileMargin * 2, height - tileMargin * 2);
+                    if (this._hovered || this.x === activeColumn) {
+                        context.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                        context.beginPath();
+                        context.fillRect(this.x * width + tileMargin, this.y * height + tileMargin, width - tileMargin * 2, height - tileMargin * 2);
+                    }
+                };
+
+                Tile.prototype.setPosition = function (x, y) {
+                    this.x = x;
+                    this.y = y;
+                };
+
+                Tile.prototype.hover = function () {
+                    this._hovered = true;
+                };
+
+                Tile.prototype.unhover = function () {
+                    this._hovered = false;
+                };
+
+                Tile.prototype.isHovered = function () {
+                    return this._hovered;
+                };
+
+
+                var grid = new Grid(document.body);
+                //var AI = new AI(1, grid);
+            })
+
+        })();
+
+    </script>-->
+</head>
+    <body>
+        <!--MELODY MAKER-->
+    </body>
+    </html>

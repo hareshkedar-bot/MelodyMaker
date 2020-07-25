@@ -1,0 +1,183 @@
+﻿@charset "UTF-8";
+@font-face {
+  font-family: "icons";
+  src: url("https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.eot");
+  src: url("https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.eot?#iefix") format("eot"), url("https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.woff") format("woff"), url("https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.ttf") format("truetype"), url("https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.svg#icons") format("svg"); }
+
+.icon-svg_808:before, .icon-svg_back_arrow:before, .icon-svg_bird:before, .icon-svg_close-button:before, .icon-svg_computer:before, .icon-svg_facebook:before, .icon-svg_fast_man:before, .icon-svg_flute:before, .icon-svg_frowny_face:before, .icon-svg_go_arrow:before, .icon-svg_gplus:before, .icon-svg_hamburger_menu:before, .icon-svg_hand:before, .icon-svg_harp:before, .icon-svg_horn:before, .icon-svg_left_arrow:before, .icon-svg_man:before, .icon-svg_metronome:before, .icon-svg_no_record:before, .icon-svg_pause:before, .icon-svg_piano:before, .icon-svg_play:before, .icon-svg_record:before, .icon-svg_right_arrow:before, .icon-svg_rotate_phone:before, .icon-svg_slow_man:before, .icon-svg_twitter:before, .icon-svg_wave_form:before, .icon-svg_wine_glass:before {
+  font-family: "icons";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-decoration: none;
+  text-transform: none; }
+
+.icon-svg_808:before {
+  content: ""; }
+
+.icon-svg_back_arrow:before {
+  content: ""; }
+
+.icon-svg_bird:before {
+  content: ""; }
+
+.icon-svg_close-button:before {
+  content: ""; }
+
+.icon-svg_computer:before {
+  content: ""; }
+
+.icon-svg_facebook:before {
+  content: ""; }
+
+.icon-svg_fast_man:before {
+  content: ""; }
+
+.icon-svg_flute:before {
+  content: ""; }
+
+.icon-svg_frowny_face:before {
+  content: ""; }
+
+.icon-svg_go_arrow:before {
+  content: ""; }
+
+.icon-svg_gplus:before {
+  content: ""; }
+
+.icon-svg_hamburger_menu:before {
+  content: ""; }
+
+.icon-svg_hand:before {
+  content: ""; }
+
+.icon-svg_harp:before {
+  content: ""; }
+
+.icon-svg_horn:before {
+  content: ""; }
+
+.icon-svg_left_arrow:before {
+  content: ""; }
+
+.icon-svg_man:before {
+  content: ""; }
+
+.icon-svg_metronome:before {
+  content: ""; }
+
+.icon-svg_no_record:before {
+  content: ""; }
+
+.icon-svg_pause:before {
+  content: ""; }
+
+.icon-svg_piano:before {
+  content: ""; }
+
+.icon-svg_play:before {
+  content: ""; }
+
+.icon-svg_record:before {
+  content: ""; }
+
+.icon-svg_right_arrow:before {
+  content: ""; }
+
+.icon-svg_rotate_phone:before {
+  content: ""; }
+
+.icon-svg_slow_man:before {
+  content: ""; }
+
+.icon-svg_twitter:before {
+  content: ""; }
+
+.icon-svg_wave_form:before {
+  content: ""; }
+
+.icon-svg_wine_glass:before {
+  content: ""; }
+
+#Bottom {
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: #f2f2f2;
+  box-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.4); }
+  #Bottom #Controls {
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%; }
+    #Bottom #Controls .Button {
+      position: absolute;
+      bottom: 20px;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0px 3px 1px rgba(0, 0, 0, 0.2);
+      transition: transform 0.05s; }
+    #Bottom #Controls .Button:active {
+      transform: scale(1.1); }
+    #Bottom #Controls #PlayButton {
+      left: 15px;
+      background-color: #16a8f0;
+      font-size: 60px;
+      color: white; }
+    #Bottom #Controls #Harmony {
+      position: absolute;
+      left: 90px;
+      background-color: #fff;
+      background-image: url(../images/harmony_off.png);
+      background-size: 100% 100%; }
+    #Bottom #Controls #Harmony.right {
+      background-image: url(../images/harmony_on.png);
+      background-color: #FFC234;
+      background-size: 100% 100%; }
+    #Bottom #Controls #SliderContainer {
+      width: calc(100% - 220px);
+      position: absolute;
+      right: 35px;
+      top: 40%; }
+      #Bottom #Controls #SliderContainer .Slider #Rail #Fill {
+        background-color: #16a8f0; }
+      #Bottom #Controls #SliderContainer .Slider #Handle {
+        background-color: #16a8f0; }
+      #Bottom #Controls #SliderContainer #manual-tempo {
+        background: none;
+        border: none;
+        color: #16a8f0;
+        display: block;
+        font-size: 21px;
+        margin: 0;
+        position: absolute;
+        right: -93px;
+        text-decoration: none;
+        top: -4px;
+        width: 57px; }
+        @media screen and (max-width: 767px) {
+          #Bottom #Controls #SliderContainer #manual-tempo {
+            display: none; } }
+      #Bottom #Controls #SliderContainer #Tortoise, #Bottom #Controls #SliderContainer #Hare {
+        top: -20px;
+        position: absolute;
+        height: 60px;
+        width: 15px;
+        font-size: 60px;
+        line-height: 60px;
+        pointer-events: none;
+        color: #646464; }
+      #Bottom #Controls #SliderContainer #Hare {
+        right: 0px; }
+      #Bottom #Controls #SliderContainer #Tortoise {
+        left: -43px; }

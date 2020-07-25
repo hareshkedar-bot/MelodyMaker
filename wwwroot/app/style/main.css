@@ -1,0 +1,20 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Poppins");
+html, body {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
+  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Poppins', sans-serif; }
+  html #iOSTap, body #iOSTap {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background-color: white;
+    z-index: 100000; }

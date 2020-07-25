@@ -1,0 +1,224 @@
+﻿#MelodyContainer {
+  width: 100%;
+  height: calc(100% - 100px);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden; }
+  #MelodyContainer .Tile, #MelodyContainer .Ghost, #MelodyContainer .Ghost #Alternate {
+    width: 12.5%;
+    height: 7.14286%;
+    position: absolute;
+    z-index: 1; }
+    #MelodyContainer .Tile *, #MelodyContainer .Ghost *, #MelodyContainer .Ghost #Alternate * {
+      pointer-events: none; }
+    #MelodyContainer .Tile #Highlight, #MelodyContainer .Ghost #Highlight, #MelodyContainer .Ghost #Alternate #Highlight {
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      opacity: 0; }
+    #MelodyContainer .Tile #Highlight.Visible, #MelodyContainer .Ghost #Highlight.Visible, #MelodyContainer .Ghost #Alternate #Highlight.Visible {
+      opacity: 1; }
+    #MelodyContainer .Tile #Dot, #MelodyContainer .Ghost #Dot, #MelodyContainer .Ghost #Alternate #Dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -2.5px;
+      margin-top: -2.5px;
+      width: 5px;
+      height: 5px;
+      background-color: #cccccc;
+      border-radius: 50%; }
+  #MelodyContainer .Tile.Active #Highlight, #MelodyContainer .Ghost.Active #Highlight, #MelodyContainer .Ghost.Active #Alternate #Highlight {
+    background-color: black !important;
+    transition: background-color 0s; }
+  #MelodyContainer .Ghost, #MelodyContainer .Ghost #Alternate {
+    opacity: 1;
+    pointer-events: none;
+    transition: left 0.1s 0.1s, top 0.1s 0s;
+    z-index: 0; }
+    #MelodyContainer .Ghost #Highlight, #MelodyContainer .Ghost #Alternate #Highlight {
+      background-color: rgba(255, 194, 52, 0.5) !important;
+      opacity: 1; }
+  #MelodyContainer .Ghost.Visible, #MelodyContainer .Ghost.Visible #Alternate {
+    opacity: 1; }
+  #MelodyContainer .Ghost #Alternate {
+    width: 100%;
+    height: 100%;
+    transform: translate(-800%, 0px); }
+  #MelodyContainer .Row1 #Highlight {
+    background-color: #d1c12e; }
+  #MelodyContainer .Row2 #Highlight {
+    background-color: #4bb250; }
+  #MelodyContainer .Row3 #Highlight {
+    background-color: #4598b6; }
+  #MelodyContainer .Row4 #Highlight {
+    background-color: #4e61d8; }
+  #MelodyContainer .Row5 #Highlight {
+    background-color: #a542b1; }
+  #MelodyContainer .Row6 #Highlight {
+    background-color: #f75839; }
+  #MelodyContainer .Row7 #Highlight {
+    background-color: #f7943d; }
+  #MelodyContainer .Row8 #Highlight {
+    background-color: #d1c12e; }
+  #MelodyContainer .Row9 #Highlight {
+    background-color: #4bb250; }
+  #MelodyContainer .Row10 #Highlight {
+    background-color: #4598b6; }
+  #MelodyContainer .Row11 #Highlight {
+    background-color: #4e61d8; }
+  #MelodyContainer .Row12 #Highlight {
+    background-color: #a542b1; }
+  #MelodyContainer .Row13 #Highlight {
+    background-color: #f75839; }
+  #MelodyContainer .Row14 #Highlight {
+    background-color: #f7943d; }
+  #MelodyContainer .Row-14 {
+    top: -107.14286%; }
+  #MelodyContainer .Row-13 {
+    top: -100%; }
+  #MelodyContainer .Row-12 {
+    top: -92.85714%; }
+  #MelodyContainer .Row-11 {
+    top: -85.71429%; }
+  #MelodyContainer .Row-10 {
+    top: -78.57143%; }
+  #MelodyContainer .Row-9 {
+    top: -71.42857%; }
+  #MelodyContainer .Row-8 {
+    top: -64.28571%; }
+  #MelodyContainer .Row-7 {
+    top: -57.14286%; }
+  #MelodyContainer .Row-6 {
+    top: -50%; }
+  #MelodyContainer .Row-5 {
+    top: -42.85714%; }
+  #MelodyContainer .Row-4 {
+    top: -35.71429%; }
+  #MelodyContainer .Row-3 {
+    top: -28.57143%; }
+  #MelodyContainer .Row-2 {
+    top: -21.42857%; }
+  #MelodyContainer .Row-1 {
+    top: -14.28571%; }
+  #MelodyContainer .Row0 {
+    top: -7.14286%; }
+  #MelodyContainer .Row1 {
+    top: 0%; }
+  #MelodyContainer .Row2 {
+    top: 7.14286%; }
+  #MelodyContainer .Row3 {
+    top: 14.28571%; }
+  #MelodyContainer .Row4 {
+    top: 21.42857%; }
+  #MelodyContainer .Row5 {
+    top: 28.57143%; }
+  #MelodyContainer .Row6 {
+    top: 35.71429%; }
+  #MelodyContainer .Row7 {
+    top: 42.85714%; }
+  #MelodyContainer .Row8 {
+    top: 50%; }
+  #MelodyContainer .Row9 {
+    top: 57.14286%; }
+  #MelodyContainer .Row10 {
+    top: 64.28571%; }
+  #MelodyContainer .Row11 {
+    top: 71.42857%; }
+  #MelodyContainer .Row12 {
+    top: 78.57143%; }
+  #MelodyContainer .Row13 {
+    top: 85.71429%; }
+  #MelodyContainer .Row14 {
+    top: 92.85714%; }
+  #MelodyContainer .Row15 {
+    top: 100%; }
+  #MelodyContainer .Row16 {
+    top: 107.14286%; }
+  #MelodyContainer .Row17 {
+    top: 114.28571%; }
+  #MelodyContainer .Row18 {
+    top: 121.42857%; }
+  #MelodyContainer .Row19 {
+    top: 128.57143%; }
+  #MelodyContainer .Row20 {
+    top: 135.71429%; }
+  #MelodyContainer .Row21 {
+    top: 142.85714%; }
+  #MelodyContainer .Row22 {
+    top: 150%; }
+  #MelodyContainer .Row23 {
+    top: 157.14286%; }
+  #MelodyContainer .Row24 {
+    top: 164.28571%; }
+  #MelodyContainer .Row25 {
+    top: 171.42857%; }
+  #MelodyContainer .Row26 {
+    top: 178.57143%; }
+  #MelodyContainer .Row27 {
+    top: 185.71429%; }
+  #MelodyContainer .Row28 {
+    top: 192.85714%; }
+  #MelodyContainer .Column-8 {
+    left: -112.5%; }
+  #MelodyContainer .Column-7 {
+    left: -100%; }
+  #MelodyContainer .Column-6 {
+    left: -87.5%; }
+  #MelodyContainer .Column-5 {
+    left: -75%; }
+  #MelodyContainer .Column-4 {
+    left: -62.5%; }
+  #MelodyContainer .Column-3 {
+    left: -50%; }
+  #MelodyContainer .Column-2 {
+    left: -37.5%; }
+  #MelodyContainer .Column-1 {
+    left: -25%; }
+  #MelodyContainer .Column0 {
+    left: -12.5%; }
+  #MelodyContainer .Column1 {
+    left: 0%; }
+  #MelodyContainer .Column2 {
+    left: 12.5%; }
+  #MelodyContainer .Column3 {
+    left: 25%; }
+  #MelodyContainer .Column4 {
+    left: 37.5%; }
+  #MelodyContainer .Column5 {
+    left: 50%; }
+  #MelodyContainer .Column6 {
+    left: 62.5%; }
+  #MelodyContainer .Column7 {
+    left: 75%; }
+  #MelodyContainer .Column8 {
+    left: 87.5%; }
+  #MelodyContainer .Column9 {
+    left: 100%; }
+  #MelodyContainer .Column10 {
+    left: 112.5%; }
+  #MelodyContainer .Column11 {
+    left: 125%; }
+  #MelodyContainer .Column12 {
+    left: 137.5%; }
+  #MelodyContainer .Column13 {
+    left: 150%; }
+  #MelodyContainer .Column14 {
+    left: 162.5%; }
+  #MelodyContainer .Column15 {
+    left: 175%; }
+  #MelodyContainer .Column16 {
+    left: 187.5%; }
+  #MelodyContainer #Indicator {
+    position: absolute;
+    opacity: 0.8;
+    pointer-events: none;
+    left: -12.5%;
+    top: 0px;
+    width: 12.5%;
+    height: 100%;
+    background-color: #f2f2f2;
+    z-index: 0; }

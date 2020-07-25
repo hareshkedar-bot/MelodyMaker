@@ -1,0 +1,30 @@
+﻿[
+  {
+    "outputFile": "wwwroot/app/style/main.css",
+    "inputFile": "wwwroot/app/style/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/bottom.css",
+    "inputFile": "wwwroot/app/style/bottom.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/common.css",
+    "inputFile": "wwwroot/app/style/common.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/grid.css",
+    "inputFile": "wwwroot/app/style/grid.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/icons.css",
+    "inputFile": "wwwroot/app/style/icons.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/melody.css",
+    "inputFile": "wwwroot/app/style/melody.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/slider.css",
+    "inputFile": "wwwroot/app/style/slider.scss"
+  }
+]
