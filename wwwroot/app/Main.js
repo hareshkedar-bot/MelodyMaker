@@ -15,52 +15,67 @@
  */
 
 require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer', 
-	'Tone/core/Transport', 'sound/Player'],
+	'Tone/core/Transport', 'sound/Player', 'data/Config'],
 
-function(domReady,  Grid, Bottom, Sequencer, Transport, Player) {
+	function (domReady, Grid, Bottom, Sequencer, Transport, Player, Config) {
 	//domReady
 	(function () {
-        debugger;
-		window.parent.postMessage("loaded", "*");
+		
+		var modal = document.getElementById("myModal");
+		modal.style.display = "block";
+		document.getElementsByClassName("okbutton")[0].onclick = function () {
+			var mobileNumber = document.getElementById("mobilenumber").value;
+			if (mobileNumber != "") {
+				Config.defaultInput = mobileNumber;
+				modal.style.display = "none";
+				loadDom();
+			}
+			else {
+				alert("kindly input mobile number");
+			}
+		}
+		function loadDom() {
+			window.parent.postMessage("loaded", "*");
 
-		var grid = new Grid(document.body);
-		var bottom = new Bottom(document.body);
+			var grid = new Grid(document.body);
+			var bottom = new Bottom(document.body);
 
-		bottom.onDirection = function(dir) {
-			grid.setDirection(dir);
-		};
+			bottom.onDirection = function (dir) {
+				grid.setDirection(dir);
+			};
 
-		var player = new Player();
+			var player = new Player();
 
-		var seq = new Sequencer(function(time, step) {
-			var notes = grid.select(step);
-			player.play(notes, time);
-		});
+			var seq = new Sequencer(function (time, step) {
+				var notes = grid.select(step);
+				player.play(notes, time);
+			});
 
-		grid.onNote = function(note) {
-			player.tap(note);
-		};
+			grid.onNote = function (note) {
+				player.tap(note);
+			};
 
-		Transport.on('stop', function() {
-			grid.select(-1);
-		});
+			Transport.on('stop', function () {
+				grid.select(-1);
+			});
 
-		//send the ready message to the parent
-		var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-		var isAndroid = /Android/.test(navigator.userAgent) && !window.MSStream;
+			//send the ready message to the parent
+			var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+			var isAndroid = /Android/.test(navigator.userAgent) && !window.MSStream;
 
-		//full screen button on iOS
-		//if (isIOS || isAndroid){
-		//	make a full screen element and put it in front
-		//	var iOSTapper = document.createElement("div");
-		//	iOSTapper.id = "iOSTap";
-  //          document.body.appendChild(iOSTapper);
-		//	new StartAudioContext(Transport.context, iOSTapper).then(function() {
-		//		iOSTapper.remove();
-		//		window.parent.postMessage('ready','*');
-		//	});
-		//} else {
-			window.parent.postMessage('ready','*');
-		//}
+			//full screen button on iOS
+			//if (isIOS || isAndroid){
+			//	make a full screen element and put it in front
+			//	var iOSTapper = document.createElement("div");
+			//	iOSTapper.id = "iOSTap";
+			//          document.body.appendChild(iOSTapper);
+			//	new StartAudioContext(Transport.context, iOSTapper).then(function() {
+			//		iOSTapper.remove();
+			//		window.parent.postMessage('ready','*');
+			//	});
+			//} else {
+			window.parent.postMessage('ready', '*');
+			//}
+		}
 	})();
 	});
