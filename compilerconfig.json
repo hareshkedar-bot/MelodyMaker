@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/app/style/slider.css",
     "inputFile": "wwwroot/app/style/slider.scss"
+  },
+  {
+    "outputFile": "wwwroot/app/style/header.css",
+    "inputFile": "wwwroot/app/style/header.scss"
   }
 ]

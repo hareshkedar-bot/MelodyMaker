@@ -15,9 +15,9 @@
  */
 
 require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer', 
-	'Tone/core/Transport', 'sound/Player', 'data/Config'],
+	'Tone/core/Transport', 'sound/Player', 'data/Config', 'interface/Header'],
 
-	function (domReady, Grid, Bottom, Sequencer, Transport, Player, Config) {
+	function (domReady, Grid, Bottom, Sequencer, Transport, Player, Config, Header) {
 	//domReady
 	(function () {
 
@@ -47,6 +47,7 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 		function loadDom() {
 			window.parent.postMessage("loaded", "*");
 
+			var header = new Header(document.body);
 			grid = new Grid(document.body);
 			var bottom = new Bottom(document.body);
 
