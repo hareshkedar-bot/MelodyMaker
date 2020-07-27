@@ -389,5 +389,11 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 		}
 
 	}
+	Grid.prototype.updateClick = function () {
+		var defaultVals = Config.defaultInput.split("");
+		for (var i = 0; i < defaultVals.length; i++) {
+			this._addTile(i, parseInt(defaultVals[i]),true);
+		}
+	}
 	return Grid;
 });

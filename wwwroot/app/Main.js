@@ -20,15 +20,24 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 	function (domReady, Grid, Bottom, Sequencer, Transport, Player, Config) {
 	//domReady
 	(function () {
-		
+
+		var grid = null;
 		var modal = document.getElementById("myModal");
 		modal.style.display = "block";
 		document.getElementsByClassName("okbutton")[0].onclick = function () {
 			var mobileNumber = document.getElementById("mobilenumber").value;
 			if (mobileNumber != "") {
-				Config.defaultInput = mobileNumber;
+				if (Config.inputModified) {
+					grid.updateClick();
+					Config.defaultInput = mobileNumber;
+					grid.defaultClick();
+				}
+				else {
+					Config.defaultInput = mobileNumber;
+					loadDom();
+				}
 				modal.style.display = "none";
-				loadDom();
+				document.getElementById("mobilenumber").value = "";
 			}
 			else {
 				alert("kindly input mobile number");
@@ -37,7 +46,7 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 		function loadDom() {
 			window.parent.postMessage("loaded", "*");
 
-			var grid = new Grid(document.body);
+			grid = new Grid(document.body);
 			var bottom = new Bottom(document.body);
 
 			bottom.onDirection = function (dir) {

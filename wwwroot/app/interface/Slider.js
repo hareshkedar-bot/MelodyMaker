@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-define(['./SliderBar', 'Tone/core/Transport'], function(SliderBar, Transport) {
+define(['./SliderBar', 'Tone/core/Transport', 'data/Config'], function(SliderBar, Transport, Config) {
 
 	var Slider = function(container) {
 		this._min = 70;
@@ -46,6 +46,12 @@ define(['./SliderBar', 'Tone/core/Transport'], function(SliderBar, Transport) {
 		this.input.addEventListener("input", this._onInputChange.bind(this));
 		this.input.addEventListener("blur", this._resetInput.bind(this));
 		this.sliderContainer.appendChild(this.input);
+
+		this._reenter = document.createElement('button');
+		this._reenter.id = "Reenter";
+		this._reenter.innerHTML = "Re-enter Phone";
+		this._reenter.addEventListener("click", this._onReEnterClick.bind(this));
+		this.sliderContainer.appendChild(this._reenter);
 	};
 
 	Slider.prototype._useMinMax = function(val) {
@@ -66,6 +72,12 @@ define(['./SliderBar', 'Tone/core/Transport'], function(SliderBar, Transport) {
 	Slider.prototype._changed = function(tempo) {
 		this.input.value = tempo;
 		Transport.bpm.value = this._useMinMax(tempo);
+	};
+
+	Slider.prototype._onReEnterClick = function (buttonVal) {
+		Config.inputModified = true;
+		var modal = document.getElementById("myModal");
+		modal.style.display = "block";
 	};
 
 	return Slider;

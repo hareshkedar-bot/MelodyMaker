@@ -40,6 +40,7 @@ function(Slider, Transport, Orientation) {
 		this._harmony.classList.add('Button');
 		this._controlsContainer.appendChild(this._harmony);
 		this._harmony.addEventListener('click', this._directionClicked.bind(this));
+		this._harmony.style.display = 'none';
 
 		// this._directions = ['none', 'up', 'down', 'right', 'left'];
 		this._directions = ['none', 'right'];
