@@ -28,6 +28,7 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 			var mobileNumber = document.getElementById("mobilenumber").value;
 			if (mobileNumber != "") {
 				if (Config.inputModified) {
+					Config.disableClick = false;
 					grid.updateClick();
 					Config.defaultInput = mobileNumber;
 					grid.defaultClick();

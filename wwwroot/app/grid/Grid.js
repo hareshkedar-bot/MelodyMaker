@@ -131,23 +131,24 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 	};
 
 	Grid.prototype._clicked = function (e) {
-        this.mouseDrag = true;
+		this.mouseDrag = true;
+		if (!Config.disableClick) {
+			e.preventDefault();
+			//get the touch coord
+			if (e.type === 'touchstart' || e.type === 'touchmove') {
+				for (var i = 0; i < e.changedTouches.length; i++) {
+					var touch = e.changedTouches[i];
+					var touchTilePos = this._tileAtPosition(touch.clientX, touch.clientY);
+					this._addTile(touchTilePos.x, touchTilePos.y);
 
-		e.preventDefault();
-		//get the touch coord
-		if (e.type === 'touchstart' || e.type === 'touchmove') {
-			for (var i = 0; i < e.changedTouches.length; i++) {
-				var touch = e.changedTouches[i];
-				var touchTilePos = this._tileAtPosition(touch.clientX, touch.clientY);
-				this._addTile(touchTilePos.x, touchTilePos.y);
+					this.lastDragTile = touchTilePos;
+				}
+			} else if (e.type === "mousedown") {
+				var tilePos = this._tileAtPosition(e.clientX, e.clientY);
+				this._addTile(tilePos.x, tilePos.y, true);
 
-                this.lastDragTile = touchTilePos;
+				this.lastDragTile = tilePos;
 			}
-		} else if (e.type === "mousedown") {
-			var tilePos = this._tileAtPosition(e.clientX, e.clientY);
-			this._addTile(tilePos.x, tilePos.y, true);
-
-            this.lastDragTile = tilePos;
 		}
 	};
 
@@ -387,7 +388,7 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 		for (var i = 0; i < defaultVals.length; i++) {
 			this._addTile(i, parseInt(defaultVals[i]));
 		}
-
+		Config.disableClick = true;
 	}
 	Grid.prototype.updateClick = function () {
 		var defaultVals = Config.defaultInput.split("");
