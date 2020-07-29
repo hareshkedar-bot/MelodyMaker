@@ -38,7 +38,7 @@ function(Slider, Transport, Orientation) {
 		this._harmony = document.createElement('div');
 		this._harmony.id = 'Harmony';
 		this._harmony.classList.add('Button');
-		this._controlsContainer.appendChild(this._harmony);
+		//this._controlsContainer.appendChild(this._harmony);
 		this._harmony.addEventListener('click', this._directionClicked.bind(this));
 		this._harmony.style.display = 'none';
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\OTHERS\\WORK\\MelodyMaker\\MelodyMaker\\MelodyMaker.csproj": {}
+    "F:\\OTHERS\\CODE\\MelodyMaker-master\\MelodyMaker-master\\MelodyMaker.csproj": {}
   },
   "projects": {
-    "F:\\OTHERS\\WORK\\MelodyMaker\\MelodyMaker\\MelodyMaker.csproj": {
+    "F:\\OTHERS\\CODE\\MelodyMaker-master\\MelodyMaker-master\\MelodyMaker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\OTHERS\\WORK\\MelodyMaker\\MelodyMaker\\MelodyMaker.csproj",
+        "projectUniqueName": "F:\\OTHERS\\CODE\\MelodyMaker-master\\MelodyMaker-master\\MelodyMaker.csproj",
         "projectName": "MelodyMaker",
-        "projectPath": "F:\\OTHERS\\WORK\\MelodyMaker\\MelodyMaker\\MelodyMaker.csproj",
+        "projectPath": "F:\\OTHERS\\CODE\\MelodyMaker-master\\MelodyMaker-master\\MelodyMaker.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "F:\\OTHERS\\WORK\\MelodyMaker\\MelodyMaker\\obj\\",
+        "outputPath": "F:\\OTHERS\\CODE\\MelodyMaker-master\\MelodyMaker-master\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -21,14 +21,14 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp2.1"
+          "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp2.1": {
+          "netcoreapp3.1": {
             "projectReferences": {}
           }
         },
@@ -39,28 +39,19 @@
         }
       },
       "frameworks": {
-        "netcoreapp2.1": {
+        "netcoreapp3.1": {
           "dependencies": {
-            "Microsoft.AspNetCore.App": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[2.1.1, )",
-              "autoReferenced": true
-            },
             "Microsoft.AspNetCore.Razor.Design": {
-              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.1.2, )"
+              "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.StaticFiles": {
               "target": "Package",
-              "version": "[2.1.1, )"
+              "version": "[2.2.0, )"
             },
-            "Microsoft.NETCore.App": {
-              "suppressParent": "All",
+            "NAudio": {
               "target": "Package",
-              "version": "[2.1.0, )",
-              "autoReferenced": true
+              "version": "[1.10.0, )"
             }
           },
           "imports": [
@@ -73,6 +64,14 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "none"
+            }
+          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }

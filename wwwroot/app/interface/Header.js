@@ -11,7 +11,7 @@
 			this._controlsContainer.id = 'header-title';
 			this._controlsContainer.style.clear = "both";
 			this._controlsContainer.style.textAlign = "center";
-			this._controlsContainer.innerHTML = "Melody Maker";
+			this._controlsContainer.innerHTML = "ADSMN Melody Maker";
 			this._element.appendChild(this._controlsContainer);
 
 			container.appendChild(this._element);
