@@ -38,8 +38,17 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 					grid.defaultClick();
 				}
 				else {
-					Config.defaultInput = mobileNumber;
-					loadDom();
+					Config.defaultInput = mobileNumber; 
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function () {
+						if (this.readyState == 4 && this.status == 200) {
+							loadDom();
+						}
+					}
+					xhttp.open("POST", "/api/audio", true);
+					xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xhttp.send("phoneNumber=" + mobileNumber + "");
+
 				}
 				modal.style.display = "none";
 				document.getElementById("mobilenumber").value = "";
