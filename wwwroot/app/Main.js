@@ -28,10 +28,11 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 		document.getElementsByClassName("okbutton")[0].onclick = function () {
 			var mobileNumber = document.getElementById("mobilenumber").value;
 			if (mobileNumber == "")
-				alert("kindly enter 10 digit mobile number");
+				document.getElementById("alertmsg").style.display = "block";
 			else if (mobileNumber != "" && mobileNumber.length != 10)
-				alert("kindly enter 10 digit mobile number");
+				document.getElementById("alertmsg").style.display = "block";
 			else {
+					document.getElementById("alertmsg").style.display = "none";
 					var xhttp = new XMLHttpRequest();
 					xhttp.onreadystatechange = function () {
 						if (this.readyState == 4 && this.status == 200) {
