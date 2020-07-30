@@ -24,6 +24,7 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 		var grid = null;
 		var modal = document.getElementById("myModal");
 		modal.style.display = "block";
+
 		document.getElementsByClassName("okbutton")[0].onclick = function () {
 			var mobileNumber = document.getElementById("mobilenumber").value;
 			if (mobileNumber == "")
@@ -31,29 +32,24 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 			else if (mobileNumber != "" && mobileNumber.length != 10)
 				alert("kindly enter 10 digit mobile number");
 			else {
-				if (Config.inputModified) {
-					Config.disableClick = false;
-					grid.updateClick();
-					Config.defaultInput = mobileNumber;
-					grid.defaultClick();
-				}
-				else {
-					Config.defaultInput = mobileNumber; 
 					var xhttp = new XMLHttpRequest();
 					xhttp.onreadystatechange = function () {
-						if (this.readyState == 4 && this.status == 200) {
-							loadDom();
+						if ((this.readyState == 4 || this.readyState == 2) && this.status == 200) {
+							Config.disableClick = false;
+							grid.updateClick();
+							Config.defaultInput = mobileNumber;
+							grid.defaultClick();
+
+							modal.style.display = "none";
+							document.getElementById("mobilenumber").value = "";
 						}
 					}
 					xhttp.open("POST", "/api/audio", true);
 					xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					xhttp.send("phoneNumber=" + mobileNumber + "");
-
-				}
-				modal.style.display = "none";
-				document.getElementById("mobilenumber").value = "";
 			}
 		}
+		loadDom();
 		function loadDom() {
 			window.parent.postMessage("loaded", "*");
 
