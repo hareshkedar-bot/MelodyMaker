@@ -26,7 +26,11 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 		modal.style.display = "block";
 		document.getElementsByClassName("okbutton")[0].onclick = function () {
 			var mobileNumber = document.getElementById("mobilenumber").value;
-			if (mobileNumber != "") {
+			if (mobileNumber == "")
+				alert("kindly enter 10 digit mobile number");
+			else if (mobileNumber != "" && mobileNumber.length != 10)
+				alert("kindly enter 10 digit mobile number");
+			else {
 				if (Config.inputModified) {
 					Config.disableClick = false;
 					grid.updateClick();
@@ -39,9 +43,6 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 				}
 				modal.style.display = "none";
 				document.getElementById("mobilenumber").value = "";
-			}
-			else {
-				alert("kindly input mobile number");
 			}
 		}
 		function loadDom() {
