@@ -256,6 +256,10 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 				//draw tile with border
 				this.bgContext.beginPath();
 				this.bgContext.strokeRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
+				this.bgContext.fillStyle = "black";
+				this.bgContext.font = "20pt sans-sarif";
+				this.bgContext.fillText(y, x * this.tileWidth + 100, y * this.tileHeight + 50);
+				this.bgContext.strokeText(y, x * this.tileWidth + 100, y * this.tileHeight + 50);
 		  }
 		}
 	};
