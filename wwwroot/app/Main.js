@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer', 
+require(['domready',  'grid/Grid',  'sound/Sequencer', 
 	'Tone/core/Transport', 'sound/Player', 'data/Config', 'interface/Header'],
 
-	function (domReady, Grid, Bottom, Sequencer, Transport, Player, Config, Header) {
+	function (domReady, Grid,  Sequencer, Transport, Player, Config, Header) {
 	//domReady
 	(function () {
 
@@ -32,22 +32,47 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 			else if (mobileNumber != "" && mobileNumber.length != 10)
 				document.getElementById("alertmsg").style.display = "block";
 			else {
-					document.getElementById("alertmsg").style.display = "none";
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function () {
-						if (this.readyState == 4 && this.status == 200) {
-							Config.disableClick = false;
-							grid.updateClick();
-							Config.defaultInput = mobileNumber;
-							grid.defaultClick();
+				document.getElementById("alertmsg").style.display = "none";
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', encodeURI("/api/audio"), true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				//xhr.setRequestHeader('Content-Type', 'application/json');
+				xhr.responseType = 'blob';
+				xhr.setRequestHeader("cache-control", "no-cache");
+				xhr.onload = function (evt) {
+					var blob = new Blob([xhr.response], { type: 'audio/ogg' });
+					var objectUrl = URL.createObjectURL(blob);
+					var audio = document.getElementById("audioElement");
+					audio.src= objectUrl;
+					audio.onload = function (evt) {
+						URL.revokeObjectURL(objectUrl);
+					};
+					Config.disableClick = false;
+					grid.updateClick();
+					Config.defaultInput = mobileNumber;
+					grid.defaultClick();
+					modal.style.display = "none";
+					document.getElementById("mobilenumber").value = "";
+				};
+				
+				var data = "phoneNumber=" + mobileNumber + "";
+				xhr.send(data);
 
-							modal.style.display = "none";
-							document.getElementById("mobilenumber").value = "";
-						}
-					}
-					xhttp.open("POST", "/api/audio", true);
-					xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-					xhttp.send("phoneNumber=" + mobileNumber + "");
+					//var xhttp = new XMLHttpRequest();
+					//xhttp.onreadystatechange = function () {
+					//	if (this.readyState == 4 && this.status == 200) {
+					//		Config.disableClick = false;
+					//		grid.updateClick();
+					//		Config.defaultInput = mobileNumber;
+					//		grid.defaultClick();
+
+					//		modal.style.display = "none";
+					//		document.getElementById("mobilenumber").value = "";
+					//	}
+					//}
+					//xhttp.open("POST", "/api/audio", true);
+					//xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					//xhttp.send("phoneNumber=" + mobileNumber + "");
 			}
 		}
 		loadDom();
@@ -56,11 +81,11 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 
 			var header = new Header(document.body);
 			grid = new Grid(document.body);
-			var bottom = new Bottom(document.body);
+			//var bottom = new Bottom(document.body);
 
-			bottom.onDirection = function (dir) {
-				grid.setDirection(dir);
-			};
+			//bottom.onDirection = function (dir) {
+			//	grid.setDirection(dir);
+			//};
 
 			var player = new Player();
 
@@ -80,7 +105,15 @@ require(['domready',  'grid/Grid', 'interface/Bottom', 'sound/Sequencer',
 			//send the ready message to the parent
 			var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			var isAndroid = /Android/.test(navigator.userAgent) && !window.MSStream;
+			var audioElement = document.createElement("audio");
+			audioElement.id = 'audioElement';
+			audioElement.controls = true;
+			audioElement.type = "audio/mpeg";
+			document.body.appendChild(audioElement);
 
+			//var sourceElement = document.createElement("source");
+			//sourceElement.id = 'audioElement';
+			//document.getElementById("audioElementID").appendChild(sourceElement);
 			//full screen button on iOS
 			//if (isIOS || isAndroid){
 			//	make a full screen element and put it in front

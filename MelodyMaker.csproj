@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="NAudio" Version="1.10.0" />
+    <PackageReference Include="NAudio.Lame" Version="1.1.5" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" Version="3.1.3" />

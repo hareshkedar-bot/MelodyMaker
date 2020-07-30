@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using NAudio.Lame;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -38,7 +39,7 @@ namespace MelodyMaker
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromForm]string phoneNumber)
+        public async Task<IActionResult> Post([FromForm]string phoneNumber)
         {
             //1) split number to to get 10 numbers in array
             var numsInPhone = phoneNumber.ToCharArray();
@@ -49,33 +50,19 @@ namespace MelodyMaker
             string contentRootPath = _env.ContentRootPath;
             string webRootPath = _env.WebRootPath;
 
-            //2) iterate over numbers to read file by number name and form audio
-            var k = 0;
-            foreach (var num in numsInPhone)
-            {
-                //chunkAudioFiles.Append(new AudioFileReader(webRootPath + "\\app\\AudioFiles\\file_" +num+".wav"));
-
-                var audio = new WdlResamplingSampleProvider(new AudioFileReader(webRootPath + "\\app\\AudioFiles\\file_" + num + ".mp3"), 44100);
-                //chunkAudioFiles[k] = new AudioFileReader(webRootPath + "\\app\\AudioFiles\\file_" + num + ".mp3");
-                chunkAudioStereo[k] = audio.ToStereo();
-                k++;
-            }
             byte[] buffer = new byte[1024];
             WaveFileWriter waveFileWriter = null;
             var timeRange = new double[10];
-
-            // delete the file if exist
-            //if (System.IO.File.Exists(Path.Combine(webRootPath + "\\app\\AudioFiles", "output.wav")))
-            //{
-            //    // If file found, delete it    
-            //    System.IO.File.Delete(Path.Combine(webRootPath + "\\app\\AudioFiles", "output.wav"));
-            //}
             string outputFile = webRootPath + "\\app\\AudioFiles\\output.wav";
+            //string outputFile = contentRootPath + "\\output.wav";
             try
             {
                 var counter = 0;
                 foreach (var num in numsInPhone)
                 {
+                    //if (counter > 5)
+                       // continue;
+
                     WaveFileReader reader = new WaveFileReader(webRootPath + "\\app\\AudioFiles\\file_" + num + ".wav");
                     if (waveFileWriter == null)
                     {
@@ -121,46 +108,112 @@ namespace MelodyMaker
                     waveFileWriter.Dispose();
                 }
             }
+
+            //var sourceFiles = new List<string>();
+
+            //foreach (var num in numsInPhone)
+            //{
+            //    sourceFiles.Add(webRootPath + "\\app\\AudioFiles\\file_" + num + ".wav");
+            //}
+
+            //Concatenate(outputFile, sourceFiles);
+
             backGroundMerger[0] = new WdlResamplingSampleProvider(new AudioFileReader(webRootPath + "\\app\\AudioFiles\\output.wav"), 44100).ToStereo();
             backGroundMerger[1] = new WdlResamplingSampleProvider(new AudioFileReader(webRootPath + "\\app\\AudioFiles\\harmony.wav"), 44100).ToStereo();
+
+
+            var finalAudioName = "YourTone.wav";
             // 3) Merge Audios
             var mixer = new MixingSampleProvider(backGroundMerger);
-            WaveFileWriter.CreateWaveFile16("mixed.wav", mixer);
-
-            //4) TODO : Merge background audio
-            //5) TODO : Save mobile number somewhere
-
-            //6) Return generated audio file
-        }
-
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+            WaveFileWriter.CreateWaveFile16(finalAudioName, mixer);
 
 
-        public static void Combine(string[] inputFiles, Stream output)
-        {
-            foreach (string file in inputFiles)
+            //TODO : Uncomment below and test after 16 bit audio are received
+            ConvertWavToMp3(finalAudioName, "mixed.mp3");
+
+
+            //TODO :  Use generated mp3 after 16 bit audio
+            // var fileStream = await System.IO.File.ReadAllBytesAsync(finalAudioName);
+
+            //// var fileStream = await System.IO.File.ReadAllBytesAsync("mp3_sample.mp3");
+
+            // if (fileStream == null)
+            //     return NotFound(); // returns a NotFoundResult with Status404NotFound response.
+
+            // return new FileContentResult(fileStream, "audio/mpeg")
+            // {
+            //     FileDownloadName = outputFile
+            // };
+
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream("mixed.mp3", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                Mp3FileReader reader = new Mp3FileReader(file);
-                if ((output.Position == 0) && (reader.Id3v2Tag != null))
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+
+            return File(memory, "audio/mpeg", $"mp3_sample.mp3", true);
+
+        }
+
+        [Obsolete]
+        public static void Concatenate(string outputFile, IEnumerable<string> sourceFiles)
+        {
+            byte[] buffer = new byte[1024];
+            WaveFileWriter waveFileWriter = null;
+
+            try
+            {
+                foreach (string sourceFile in sourceFiles)
                 {
-                    output.Write(reader.Id3v2Tag.RawData, 0, reader.Id3v2Tag.RawData.Length);
-                }
-                Mp3Frame frame;
-                while ((frame = reader.ReadNextFrame()) != null)
-                {
-                    output.Write(frame.RawData, 0, frame.RawData.Length);
+                    using (WaveFileReader reader = new WaveFileReader(sourceFile))
+                    {
+                        if (waveFileWriter == null)
+                        {
+                            // first time in create new Writer
+                            waveFileWriter = new WaveFileWriter(outputFile, reader.WaveFormat);
+                        }
+                        else
+                        {
+                            if (!reader.WaveFormat.Equals(waveFileWriter.WaveFormat))
+                            {
+                                throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
+                            }
+                        }
+
+
+                        //while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+                        //using (int read = reader.Read(buffer, 0, buffer.Length - (buffer.Length % waveFileWriter.WaveFormat.BlockAlign)))
+                        int read = reader.Read(buffer, 0, buffer.Length - (buffer.Length % waveFileWriter.WaveFormat.BlockAlign));
+
+                        waveFileWriter.WriteData(buffer, 0, read);
+
+                    }
                 }
             }
+            finally
+            {
+                if (waveFileWriter != null)
+                {
+                    waveFileWriter.Dispose();
+                }
+            }
+
         }
+        public static void ConvertWavToMp3(string WavFile, string outPutFile)
+        {
+            //CheckAddBinPath();
+            WaveFileReader rdr = new WaveFileReader(WavFile);
+            using (var wtr = new LameMP3FileWriter(outPutFile, rdr.WaveFormat, 128))
+            {
+                rdr.CopyTo(wtr);
+                rdr.Dispose();
+                wtr.Dispose();
+                return;
+            }
+        }
+
+        
     }
 }
