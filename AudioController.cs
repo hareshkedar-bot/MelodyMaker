@@ -63,6 +63,13 @@ namespace MelodyMaker
             byte[] buffer = new byte[1024];
             WaveFileWriter waveFileWriter = null;
             var timeRange = new double[10];
+
+            // delete the file if exist
+            //if (System.IO.File.Exists(Path.Combine(webRootPath + "\\app\\AudioFiles", "output.wav")))
+            //{
+            //    // If file found, delete it    
+            //    System.IO.File.Delete(Path.Combine(webRootPath + "\\app\\AudioFiles", "output.wav"));
+            //}
             string outputFile = webRootPath + "\\app\\AudioFiles\\output.wav";
             try
             {
