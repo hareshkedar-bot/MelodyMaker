@@ -110,7 +110,9 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 			audioElement.id = 'audioElement';
 			audioElement.controls = true;
 			audioElement.type = "audio/mpeg";
+			audioElement.loop = true;
 			document.body.appendChild(audioElement);
+			
 
 			onReEnterClick = function () {
 				Config.inputModified = true;
