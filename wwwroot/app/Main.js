@@ -49,9 +49,9 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 						URL.revokeObjectURL(objectUrl);
 					};
 					Config.disableClick = false;
-					grid.updateClick();
-					Config.defaultInput = mobileNumber;
 					grid.defaultClick();
+					Config.defaultInput = mobileNumber;
+					grid.updateClick();
 					modal.style.display = "none";
 					document.getElementById("mobilenumber").value = "";
 					document.getElementById("cover-spin").style.display = "none";

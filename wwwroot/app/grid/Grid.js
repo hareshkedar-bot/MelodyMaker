@@ -246,7 +246,7 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 		}
 	};
 
-	Grid.prototype._drawLines = function() {
+	Grid.prototype._drawLines = function () {
 		var gridWidth = Config.gridWidth;
 		var gridHeight = Config.gridHeight;
 		this.bgContext.strokeStyle = 'rgba(22, 168, 240, 0.4)';
@@ -258,13 +258,13 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 				this.bgContext.strokeRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
 				this.bgContext.fillStyle = "black";
 				this.bgContext.font = "20pt sans-sarif";
-				this.bgContext.fillText(y, x * this.tileWidth + 100, y * this.tileHeight + 50);
-				this.bgContext.strokeText(y, x * this.tileWidth + 100, y * this.tileHeight + 50);
+				this.bgContext.fillText((y + 1) % 10 , x * this.tileWidth + 100, y * this.tileHeight + 50);
+				this.bgContext.strokeText((y + 1) % 10, x * this.tileWidth + 100, y * this.tileHeight + 50);
 		  }
 		}
 	};
 
-	Grid.prototype._drawTiles = function() {
+	Grid.prototype._drawTiles = function () {
 		for (var i = 0; i < this._tiles.length; i++) {
 			var tile = this._tiles[i];
 			if (tile) {
@@ -390,14 +390,20 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 		const myParam = urlParams.get('phone');
 		var defaultVals = typeof (myParam) === "undefined" || myParam == null ? Config.defaultInput.split("") : myParam.split("");
 		for (var i = 0; i < defaultVals.length; i++) {
-			this._addTile(i, parseInt(defaultVals[i]));
+			if (defaultVals[i] === "0")
+				this._addTile(i, (parseInt(defaultVals[i]) + 9) % 10, true);
+			else
+				this._addTile(i, (parseInt(defaultVals[i]) - 1) % 10, true);
 		}
 		Config.disableClick = true;
 	}
 	Grid.prototype.updateClick = function () {
 		var defaultVals = Config.defaultInput.split("");
 		for (var i = 0; i < defaultVals.length; i++) {
-			this._addTile(i, parseInt(defaultVals[i]),true);
+			if (defaultVals[i] === "0")
+				this._addTile(i, (parseInt(defaultVals[i]) + 9) % 10, true);
+			else 
+				this._addTile(i, (parseInt(defaultVals[i]) - 1) % 10,true);
 		}
 	}
 	return Grid;
