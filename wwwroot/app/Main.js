@@ -32,6 +32,7 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 			else if (mobileNumber != "" && mobileNumber.length != 10)
 				document.getElementById("alertmsg").style.display = "block";
 			else {
+				document.getElementById("cover-spin").style.display = "block";
 				document.getElementById("alertmsg").style.display = "none";
 				var xhr = new XMLHttpRequest();
 				xhr.open('POST', encodeURI("/api/audio"), true);
@@ -53,26 +54,11 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 					grid.defaultClick();
 					modal.style.display = "none";
 					document.getElementById("mobilenumber").value = "";
+					document.getElementById("cover-spin").style.display = "none";
 				};
 				
 				var data = "phoneNumber=" + mobileNumber + "";
 				xhr.send(data);
-
-					//var xhttp = new XMLHttpRequest();
-					//xhttp.onreadystatechange = function () {
-					//	if (this.readyState == 4 && this.status == 200) {
-					//		Config.disableClick = false;
-					//		grid.updateClick();
-					//		Config.defaultInput = mobileNumber;
-					//		grid.defaultClick();
-
-					//		modal.style.display = "none";
-					//		document.getElementById("mobilenumber").value = "";
-					//	}
-					//}
-					//xhttp.open("POST", "/api/audio", true);
-					//xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-					//xhttp.send("phoneNumber=" + mobileNumber + "");
 			}
 		}
 		loadDom();
