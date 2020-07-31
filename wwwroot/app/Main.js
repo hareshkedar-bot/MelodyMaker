@@ -105,11 +105,26 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 			//send the ready message to the parent
 			var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			var isAndroid = /Android/.test(navigator.userAgent) && !window.MSStream;
+
 			var audioElement = document.createElement("audio");
 			audioElement.id = 'audioElement';
 			audioElement.controls = true;
 			audioElement.type = "audio/mpeg";
 			document.body.appendChild(audioElement);
+
+			onReEnterClick = function () {
+				Config.inputModified = true;
+				var modal = document.getElementById("myModal");
+				modal.style.display = "block";
+			}
+
+			var reenter = document.createElement('button');
+			reenter.id = "Reenter";
+			reenter.innerHTML = "Re-enter Phone";
+			reenter.addEventListener("click", onReEnterClick.bind());
+			document.body.appendChild(reenter);
+
+			
 
 			//var sourceElement = document.createElement("source");
 			//sourceElement.id = 'audioElement';

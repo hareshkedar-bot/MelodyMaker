@@ -18,3 +18,14 @@ html, body {
     position: absolute;
     background-color: white;
     z-index: 100000; }
+  html #Reenter, body #Reenter {
+    position: absolute;
+    right: 200px;
+    top: 92%;
+    padding: 10px 18px;
+    background-color: #16a8f0;
+    color: white;
+    border: none;
+    cursor: pointer; }
+  html #Reenter:hover, body #Reenter:hover {
+    border: none; }

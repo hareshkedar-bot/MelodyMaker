@@ -22,4 +22,19 @@ html, body {
 		background-color: white;
 		z-index: 100000;
 	}
+
+	#Reenter {
+		position: absolute;
+		right: 200px;
+		top: 92%;
+		padding: 10px 18px;
+		background-color: #16a8f0;
+		color: white;
+		border: none;
+		cursor: pointer;
+	}
+
+	#Reenter:hover {
+		border: none;
+	}
 }
