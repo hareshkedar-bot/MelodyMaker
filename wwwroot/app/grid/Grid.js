@@ -253,13 +253,13 @@ define([ 'data/Config', 'data/Colors', 'grid/Tile', 'grid/AI', "tween.js"],
 		this.bgContext.lineWidth = 1;
 		for (var x = 0; x < gridWidth; x++) {
 		  for (var y = 0; y < gridHeight; y++) {
-				//draw tile with border
-				this.bgContext.beginPath();
-				this.bgContext.strokeRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
-				this.bgContext.fillStyle = "black";
-				this.bgContext.font = "20pt sans-sarif";
-				this.bgContext.fillText((y + 1) % 10 , x * this.tileWidth + 100, y * this.tileHeight + 50);
-				this.bgContext.strokeText((y + 1) % 10, x * this.tileWidth + 100, y * this.tileHeight + 50);
+			//draw tile with border
+			this.bgContext.beginPath();
+			this.bgContext.strokeRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
+			this.bgContext.fillStyle = "black";
+			this.bgContext.font = "2vw sans-sarif";
+			this.bgContext.textAlign = "center";
+			this.bgContext.fillText((y + 1) % 10, x * this.tileWidth + ((this.tileWidth * 50) / 100), y * this.tileHeight + ((this.tileHeight * 50) / 100));
 		  }
 		}
 	};
