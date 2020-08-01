@@ -21,7 +21,7 @@ html, body {
   html #Reenter, body #Reenter {
     position: absolute;
     right: 200px;
-    top: 92%;
+    bottom: 30px;
     padding: 10px 18px;
     background-color: #16a8f0;
     color: white;

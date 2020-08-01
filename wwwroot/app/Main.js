@@ -143,7 +143,7 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 
 			var reenter = document.createElement('button');
 			reenter.id = "Reenter";
-			reenter.innerHTML = "Re-enter Phone";
+			reenter.innerHTML = "Retry";
 			reenter.addEventListener("click", onReEnterClick.bind());
 			document.body.appendChild(reenter);
 
