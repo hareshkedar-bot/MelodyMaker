@@ -41,7 +41,7 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 				xhr.responseType = 'blob';
 				xhr.setRequestHeader("cache-control", "no-cache");
 				xhr.onload = function (evt) {
-					var blob = new Blob([xhr.response], { type: 'audio/ogg' });
+					var blob = new Blob([xhr.response], { type: 'audio/mpeg' });
 					var objectUrl = URL.createObjectURL(blob);
 					var audio = document.getElementById("audioElement");
 					audio.src= objectUrl;
