@@ -37,4 +37,36 @@ html, body {
 	#Reenter:hover {
 		border: none;
 	}
+
+	.Button {
+		position: absolute;
+		bottom: ($bottomHeight - $buttonSize) / 2;
+		width: $buttonSize;
+		height: $buttonSize;
+		line-height: $buttonSize;
+		text-align: center;
+		border-radius: 50%;
+		cursor: pointer;
+		box-shadow: 0 0px 3px 1px rgba(0,0,0,0.2);
+		transition: transform 0.05s;
+	}
+
+	.Button:active {
+		transform: scale(1.1);
+	}
+
+	#PlayButton {
+		left: $buttonMargin;
+		background-color: $blue;
+		font-size: 60px;
+		color: white;
+	}
+
+	#downloadlink {
+		left: $buttonMargin + 80px;
+		font-size: 40px;
+		background-color: $blue;
+		color: white;
+		text-align: center;
+	}
 }

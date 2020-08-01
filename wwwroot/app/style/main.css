@@ -29,3 +29,27 @@ html, body {
     cursor: pointer; }
   html #Reenter:hover, body #Reenter:hover {
     border: none; }
+  html .Button, body .Button {
+    position: absolute;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0px 3px 1px rgba(0, 0, 0, 0.2);
+    transition: transform 0.05s; }
+  html .Button:active, body .Button:active {
+    transform: scale(1.1); }
+  html #PlayButton, body #PlayButton {
+    left: 15px;
+    background-color: #16a8f0;
+    font-size: 60px;
+    color: white; }
+  html #downloadlink, body #downloadlink {
+    left: 95px;
+    font-size: 40px;
+    background-color: #16a8f0;
+    color: white;
+    text-align: center; }

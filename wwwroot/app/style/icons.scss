@@ -113,6 +113,10 @@
 	@if $filename == svg_wine_glass {
 		$char: "\E01D";
 	}
+	@if $filename == svg_download{
+		$char: "\2B73";
+
+	}
 
 	@return $char;
 }
@@ -214,4 +218,7 @@
 }
 .icon-svg_wine_glass {
 	@include icon(svg_wine_glass);
+}
+.icon-svg_download {
+	@include icon(svg_download);
 }

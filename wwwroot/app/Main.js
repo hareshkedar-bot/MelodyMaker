@@ -44,7 +44,10 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 					var blob = new Blob([xhr.response], { type: 'audio/mpeg' });
 					var objectUrl = URL.createObjectURL(blob);
 					var audio = document.getElementById("audioElement");
-					audio.src= objectUrl;
+					audio.src = objectUrl;
+					var downloadlink = document.getElementById("downloadlink");
+					downloadlink.src = objectUrl;
+					downloadlink.setAttribute('download', mobileNumber +"_file.mp3");
 					audio.onload = function (evt) {
 						URL.revokeObjectURL(objectUrl);
 					};
@@ -94,11 +97,43 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 
 			var audioElement = document.createElement("audio");
 			audioElement.id = 'audioElement';
-			audioElement.controls = true;
 			audioElement.type = "audio/mpeg";
 			audioElement.loop = true;
+			audioElement.hidden = true;
 			document.body.appendChild(audioElement);
-			
+
+			playClicked = function (element) {
+				if (playButton.classList.contains("Playing")) {
+					playButton.classList.remove('Playing');
+					playButton.classList.add('icon-svg_play');
+					playButton.classList.remove('icon-svg_pause');
+					audioElement.pause();
+				}
+				else {
+					playButton.classList.add('Playing');
+					playButton.classList.remove('icon-svg_play');
+					playButton.classList.add('icon-svg_pause');
+					audioElement.play();
+					
+				}
+			}
+
+			var link = document.createElement('a');
+			link.id = "downloadlink";
+			link.classList.add('Button');
+			link.classList.add('icon-svg_download');
+			link.style.textDecoration = "none";
+			link.href = "";
+			link.setAttribute('download', "DownloadedFilenameHere.mp3");
+			document.body.appendChild(link);
+
+			var playButton = document.createElement('div');
+			playButton.id = 'PlayButton';
+			playButton.classList.add('Button');
+			playButton.classList.add("icon-svg_play");
+			document.body.appendChild(playButton);
+			playButton.addEventListener('click', playClicked.bind(this));
+
 
 			onReEnterClick = function () {
 				Config.inputModified = true;
