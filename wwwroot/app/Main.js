@@ -47,6 +47,7 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 					audio.src = objectUrl;
 					var downloadlink = document.getElementById("downloadlink");
 					downloadlink.src = objectUrl;
+					downloadlink.href = objectUrl;
 					downloadlink.setAttribute('download', mobileNumber +"_file.mp3");
 					audio.onload = function (evt) {
 						URL.revokeObjectURL(objectUrl);
@@ -124,6 +125,7 @@ require(['domready',  'grid/Grid',  'sound/Sequencer',
 			link.classList.add('icon-svg_download');
 			link.style.textDecoration = "none";
 			link.href = "";
+			link.src = "";
 			link.setAttribute('download', "DownloadedFilenameHere.mp3");
 			document.body.appendChild(link);
 
